@@ -1,0 +1,55 @@
+﻿@model MenuDisplayModel
+@{
+
+}
+<nav id="navbar-example2" class="navbar bg-body-tertiary px-3 mb-3">
+    <h4>
+        <a class="nav-link" href="/"><i class="bi bi-arrow-left"></i></a>
+    </h4>
+    <a href="@Url.Action("Index", "Menu", new { genreId = 1 })">麵類</a>
+    <a href="@Url.Action("Index", "Menu", new { genreId = 2 })">飯類</a>
+    <a href="@Url.Action("Index", "Menu", new { genreId = 3 })">湯類</a>
+    <a href="@Url.Action("Index", "Menu", new { genreId = 4 })">其它</a>
+</nav>
+
+<h1>菜單列表</h1>
+<table class="table table-borderless">
+    <tbody>
+        @foreach (var menu in Model.Menus)
+        {
+            <tr>
+                <td>
+                    <p>@menu.DishName</p>
+                    <p>@menu.Price</p>
+                </td>
+                <td>
+                    <button type="button" onclick="add(@menu.Id)" class="btn btn-primary">加入購物車</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts{
+    <script>
+        async function add(menuId){
+            var usernameEl = document.getElementById("username");
+            if(usernameEl==null){
+                window.location.href = "/Identity/Account/Login";
+            }
+            try {
+                var response = await fetch(`/Cart/AddItem?menuId=${menuId}`);
+                if (response.status == 200) {
+                    var result = await response.json();
+                    console.log(result);
+                    var cartCountEl = document.getElementById("cartCount");
+                    cartCountEl.innerHTML = result;
+                    window.location.href = "#cartCount";
+                }
+            }
+            catch {
+                console.log(err);
+            }
+        }
+    </script>
+}

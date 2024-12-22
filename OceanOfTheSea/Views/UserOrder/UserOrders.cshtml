@@ -1,0 +1,63 @@
+﻿@model IEnumerable<Order>
+@{
+}
+<div style="width:100%" class="mt-2">
+    <a href="/Identity/Account/Manage" class="btn btn-dark my-2">Back</a>
+    <h4>我的訂單</h4>
+    @if (Model != null && Model.Count()>0)
+    {
+       <table class="table table-striped">
+           <tr>
+               <th>下單時間</th>
+               <th>訂單狀態</th>
+           </tr>
+            @foreach(var order in Model)
+            {
+                <tr>
+                    <td>@order.CreatedDate.ToString("yy-MM-dd hh:mm")</td>
+                    <td>@order.OrderStatus.Status</td>
+                 </tr>
+                @if (order.OrderDetail != null && order.OrderDetail.Count > 0)
+                {
+                    <tr>
+                        <td>
+                            <table class="table table-striped">
+                                <tr>
+                                    <td>
+                                        總價:
+                                    </td>
+                                    <td>
+                                        @(order.OrderDetail.Select(item => item.Menu.Price * item.Quantity).Sum())
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>菜名</th>
+                                    <th>種類</th>
+                                    <th>單價</th>
+                                    <th>數量</th>
+                                    <th>總價</th>
+                                </tr>
+                                @foreach (var item in order.OrderDetail)
+                                {
+                                    <tr>
+                                        <td>@item.Menu.DishName</td>
+                                        <td>@item.Menu.Genre.Category</td>
+                                        <td>@item.Menu.Price</td>
+                                        <td>@item.Quantity</td>
+                                        <td> @(item.Menu.Price * item.Quantity) </td>
+                                    </tr>
+                                }
+                            </table>
+                        </td>
+                    </tr>
+                }
+            }
+       </table>
+    }
+    else
+    {
+        <h5>尚未有訂單</h5>
+    }
+</div>
+

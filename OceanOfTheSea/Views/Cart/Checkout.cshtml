@@ -1,0 +1,39 @@
+﻿@model CheckoutModel
+@{
+    ViewData["Title"] = "Checkout";
+}
+
+<h2>確認訂單</h2>
+<form asp-action="Checkout">
+    <div class="py-2">
+        <label asp-for="Name">訂購人姓名*</label>
+        <input type="text" class="form-control" asp-for="Name"/>
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="py-2">
+        <label asp-for="Email">電子郵件*</label>
+        <input type="text" class="form-control" asp-for="Email"/>
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+    <div class="py-2">
+        <label asp-for="MobileNumber">聯絡電話*</label>
+        <input  type="text" class="form-control" asp-for="MobileNumber"/>
+        <span asp-validation-for="MobileNumber" class="text-danger"></span>
+    </div>
+    <div class="py-2">
+        <span class="mr-2">付款方式</span>
+        <select asp-for="PaymentMethod" class="form-control">
+            <option value="">請選擇付款方式</option>
+            @foreach(var method in Enum.GetValues(typeof
+            (OceanOfTheSea.Constants.PaymentMethods)))
+            {
+                <option value="@method.ToString()">@method.ToString()</option>
+            }
+        </select>
+        <span asp-validation-for="PaymentMethod" class-text="danger"></span>
+    </div>
+    <div class="py-2">
+        <button type="submit" class="btn btn-info">Next</button>
+    </div>
+</form>
+
